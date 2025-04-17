@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1001879692422",
+    "project_id": "quartiersur",
+    "storage_bucket": "quartiersur.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001879692422:android:07d8d6fc8e420bb7d0dd07",
+        "android_client_info": {
+          "package_name": "com.appdev.quartier_sur"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV3lAVmT4sXUj9v3hf0Tiw0TTptWqyeWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

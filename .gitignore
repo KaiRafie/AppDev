@@ -117,3 +117,56 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Flutter/Dart/Pub related
+.pub-cache/
+.melos_tool/
+.idea/
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+generated_plugin_registrant.dart
+
+# Xcode
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/engine/
+ios/Flutter/flutter_export_environment.sh
+ios/Pods/
+ios/.symlinks/
+ios/Runner.xcworkspace/
+ios/.flutter-plugins
+ios/.flutter-plugins-dependencies
+
+# VS Code
+.vscode/
+
+# IntelliJ/Android Studio
+*.iml
+
+# macOS builds
+macos/Flutter/Flutter.podspec
+macos/Pods/
+macos/.symlinks/
+macos/build/
+macos/.flutter-plugins
+macos/.flutter-plugins-dependencies
+
+# Windows builds
+windows/Flutter/ephemeral/
+windows/build/
+
+# Linux builds
+linux/Flutter/ephemeral/
+linux/build/
+
+# Web builds
+web/.dart_tool/
+web/build/
+
+# Others
+pubspec.lock

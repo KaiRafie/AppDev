@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'sidebar.dart'; // adjust path if needed
+import '../components/sidebar.dart'; // adjust path if needed
 
 void main() {
   runApp(const MyApp());

@@ -52,7 +52,7 @@ class ForgotPassPage extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Enter your email and we\'ll send you a reset link.',
+                      'Enter your username and we\'ll send you a reset link.',
                       style: TextStyle(color: Color(0xFF2F4F4F)),
                       textAlign: TextAlign.center,
                     ),
@@ -66,7 +66,7 @@ class ForgotPassPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _textFieldInstance(hint: 'Email', controller: email),
+                      _textFieldInstance(hint: 'Username', controller: email),
                       const SizedBox(height: 20),
                     ],
                   ),

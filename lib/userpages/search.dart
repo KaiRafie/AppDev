@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sidebar.dart'; // Adjust if in a subfolder
+import '../components/sidebar.dart'; // Adjust if in a subfolder
 
 void main() {
   runApp(const MyApp());

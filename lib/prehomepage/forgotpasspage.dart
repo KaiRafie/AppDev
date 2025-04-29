@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quartier_sur/prehomepage/loginpage.dart';
 
 void main() {
   runApp(const ForgotPassPage());
@@ -25,7 +26,9 @@ class ForgotPassPage extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton.icon(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(
+                    builder: (context) => LoginPage(),));
               },
               icon: const Icon(Icons.arrow_back, color: Color(0xFF2F4F4F)),
               label: const Text(

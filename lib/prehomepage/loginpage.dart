@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
         DocumentSnapshot snapshot = await users.doc(username).get();
 
         if (snapshot.exists) {
-          if (snapshot['Password'] == password) {
+          if (snapshot['password'] == password) {
             return true;
           } else {
             _showErrorDialog(context, 'Invalid Password',

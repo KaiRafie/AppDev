@@ -19,66 +19,64 @@ class SignupPage extends StatelessWidget {
     TextEditingController password = TextEditingController();
     TextEditingController checkPassword = TextEditingController();
 
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: backgroundColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              const Spacer(flex: 2),
-              const Center(
-                child: Text(
-                  'Join The Neighbourhood',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF2F4F4F),
-                  ),
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Spacer(flex: 2),
+            const Center(
+              child: Text(
+                'Join The Neighbourhood',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xFF2F4F4F),
                 ),
               ),
-              const Spacer(flex: 3),
+            ),
+            const Spacer(flex: 3),
 
-              // Input fields
-              Center(
-                child: SizedBox(
-                  width: fieldWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _textFieldInstance(hint: 'Username', controller: username),
-                      const SizedBox(height: 12),
-                      _textFieldInstance(hint: 'Email', controller: email),
-                      const SizedBox(height: 12),
-                      _textFieldInstance(hint: 'Password', obscure: true, controller: password),
-                      const SizedBox(height: 12),
-                      _textFieldInstance(hint: 'Re-enter Password', obscure: true, controller: checkPassword),
-                      const SizedBox(height: 20),
-                    ],
+            // Input fields
+            Center(
+              child: SizedBox(
+                width: fieldWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _textFieldInstance(hint: 'Username', controller: username),
+                    const SizedBox(height: 12),
+                    _textFieldInstance(hint: 'Email', controller: email),
+                    const SizedBox(height: 12),
+                    _textFieldInstance(hint: 'Password', obscure: true, controller: password),
+                    const SizedBox(height: 12),
+                    _textFieldInstance(hint: 'Re-enter Password', obscure: true, controller: checkPassword),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                width: 180,
+                height: 36,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: fieldColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Sign-up',
+                    style: TextStyle(color: textColor),
                   ),
                 ),
               ),
-              Center(
-                child: SizedBox(
-                  width: 180,
-                  height: 36,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: fieldColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      'Sign-up',
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer(flex: 2),
-            ],
-          ),
+            ),
+            const Spacer(flex: 2),
+          ],
         ),
       ),
     );

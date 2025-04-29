@@ -16,86 +16,83 @@ class ForgotPassPage extends StatelessWidget {
 
     TextEditingController email = TextEditingController();
 
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: backgroundColor,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 12),
-              TextButton.icon(
-                onPressed: () {
-                  // Navigator.pop(context); or use your login page route
-                },
-                icon: const Icon(Icons.arrow_back, color: Color(0xFF2F4F4F)),
-                label: const Text(
-                  'Back to Login Page',
-                  style: TextStyle(
-                    color: Color(0xFF2F4F4F),
-                    fontWeight: FontWeight.w600,
-                  ),
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 12),
+            TextButton.icon(
+              onPressed: () {
+                // Navigator.pop(context); or use your login page route
+              },
+              icon: const Icon(Icons.arrow_back, color: Color(0xFF2F4F4F)),
+              label: const Text(
+                'Back to Login Page',
+                style: TextStyle(
+                  color: Color(0xFF2F4F4F),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const Spacer(flex: 2),
-              Center(
+            ),
+            const Spacer(flex: 2),
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    'Forgot Your Password?',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF2F4F4F),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Enter your username and we\'ll send you a reset link.',
+                    style: TextStyle(color: Color(0xFF2F4F4F)),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(flex: 2),
+            Center(
+              child: SizedBox(
+                width: fieldWidth,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text(
-                      'Forgot Your Password?',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF2F4F4F),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Enter your username and we\'ll send you a reset link.',
-                      style: TextStyle(color: Color(0xFF2F4F4F)),
-                      textAlign: TextAlign.center,
-                    ),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _textFieldInstance(hint: 'Username', controller: email),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
-              const Spacer(flex: 2),
-              Center(
-                child: SizedBox(
-                  width: fieldWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _textFieldInstance(hint: 'Username', controller: email),
-                      const SizedBox(height: 20),
-                    ],
+            ),
+            Center(
+              child: SizedBox(
+                width: 180,
+                height: 36,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: fieldColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Reset Password',
+                    style: TextStyle(color: textColor),
                   ),
                 ),
               ),
-              Center(
-                child: SizedBox(
-                  width: 180,
-                  height: 36,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: fieldColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      'Reset Password',
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer(flex: 2),
-            ],
-          ),
+            ),
+            const Spacer(flex: 2),
+          ],
         ),
-
       ),
     );
   }

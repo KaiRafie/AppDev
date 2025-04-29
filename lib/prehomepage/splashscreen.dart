@@ -24,18 +24,16 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFFA8B5A2), // Light green background
-        body: const Center(
-          child: Text(
-            'QuartierSûr',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF2F4F4F), // Dark green text
-              letterSpacing: 1.2,
-            ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFA8B5A2), // Light green background
+      body: const Center(
+        child: Text(
+          'QuartierSûr',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF2F4F4F), // Dark green text
+            letterSpacing: 1.2,
           ),
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../components/sidebar.dart';
+import 'package:quartier_sur/components/sidebar.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class AboutUsPage extends StatelessWidget {
+  const AboutUsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

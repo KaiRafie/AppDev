@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
-
-main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: PrivacyPolicyPage(),
-    );
-  }
-}
-
+import 'package:quartier_sur/components/sidebar.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);
@@ -24,6 +9,7 @@ class PrivacyPolicyPage extends StatelessWidget {
     const backgroundColor = Color(0xFFA8B5A2);
 
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Privacy Policy'),
       ),
@@ -33,7 +19,6 @@ class PrivacyPolicyPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Text(
               'Privacy Policy',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

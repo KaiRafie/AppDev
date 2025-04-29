@@ -1,17 +1,55 @@
 import 'package:flutter/material.dart';
+import '../userpages/homepage.dart';
+import '../userpages/createdpage.dart';
+import '../userpages/savedpage.dart';
+import '../userpages/search.dart';
+import '../settings/profilepage.dart';
+import '../settings/pirvacypolicypage.dart';
+import '../settings/aboutus.dart';
 
-class CustomDrawer extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onItemTap;
+class SideBar extends StatefulWidget {
+  const SideBar({super.key});
 
-  const CustomDrawer({
-    super.key,
-    required this.selectedIndex,
-    required this.onItemTap,
-  });
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
 
+class _SideBarState extends State<SideBar> {
+  int _selectedIndex = 0; // ⭐️ keep track internally
   final Color darkGreen = const Color(0xFF2F4F4F);
-  final Color lightGreen = const Color(0xFFA8B5A2);
+
+  void _navigateToPage(BuildContext context, int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    Widget page;
+
+    switch (index) {
+      case 0:
+        page = HomePage();
+        break;
+      case 1:
+        page = SearchPage();
+        break;
+      case 2:
+        page = SavedPage();
+        break;
+      case 3:
+        page = ProfilePage();
+        break;
+      case 4:
+        page = SettingsPage();
+        break;
+      default:
+        page = HomePage();
+    }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => page),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +62,7 @@ class CustomDrawer extends StatelessWidget {
         children: [
           const SizedBox(height: 40),
           const Padding(
-            padding: EdgeInsets.only(
-              left: 10,
-              top: 50,
-              right: 10,
-              bottom: 30,
-            ),
+            padding: EdgeInsets.all(10),
             child: Center(
               child: Text(
                 'QuartierSûr',
@@ -42,26 +75,28 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-
-          _buildListTile(0, Icons.home, 'Home'),
+          _buildListTile(context, 0, Icons.home, 'Home'),
           const SizedBox(height: 20),
-          _buildListTile(1, Icons.search, 'Search'),
+          _buildListTile(context, 1, Icons.search, 'Search'),
           const SizedBox(height: 20),
-          _buildListTile(2, Icons.bookmark, 'Saved'),
+          _buildListTile(context, 2, Icons.bookmark, 'Saved'),
           const SizedBox(height: 20),
-          _buildListTile(3, Icons.person, 'Profile'),
+          _buildListTile(context, 3, Icons.person, 'Profile'),
           const SizedBox(height: 20),
-          _buildListTile(4, Icons.settings, 'Settings'),
-
+          _buildListTile(context, 4, Icons.settings, 'Settings'),
           const Spacer(),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => PrivacyPolicyPage()),
+                    );
+                  },
                   child: const Text(
                     'Privacy Policy',
                     style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -69,7 +104,12 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => AboutUsPage()),
+                    );
+                  },
                   child: const Text(
                     'About Us',
                     style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -89,8 +129,8 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile(int index, IconData icon, String title) {
-    final isSelected = index == selectedIndex;
+  Widget _buildListTile(BuildContext context, int index, IconData icon, String title) {
+    final isSelected = index == _selectedIndex;
 
     return Container(
       color: isSelected ? const Color(0xFF487B7B) : darkGreen,
@@ -100,7 +140,7 @@ class CustomDrawer extends StatelessWidget {
           title,
           style: const TextStyle(color: Color(0xFFD6D3D3)),
         ),
-        onTap: () => onItemTap(index),
+        onTap: () => _navigateToPage(context, index),
       ),
     );
   }

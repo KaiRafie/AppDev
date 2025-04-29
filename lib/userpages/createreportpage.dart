@@ -88,10 +88,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        selectedIndex: -1,
-        onItemTap: (index) => Navigator.pop(context),
-      ),
+      drawer: SideBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Create Report'),

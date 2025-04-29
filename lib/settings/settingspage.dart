@@ -1,19 +1,5 @@
 import 'package:flutter/material.dart';
-
-main() {
-  runApp(app());
-}
-
-class app extends StatelessWidget {
-  const app({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SettingsPage(),
-    );
-  }
-}
+import 'package:quartier_sur/components/sidebar.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -31,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       backgroundColor: const Color(0xFFA8B5A2), // Background color
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../userpages/homepage.dart';
+import 'forgotpasspage.dart';
+import 'signuppage.dart';
 
-main() {
-  runApp(LoginPage());
+main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyDV3lAVmT4sXUj9v3hf0Tiw0TTptWqyeWc",
+          appId: "1001879692422",
+          messagingSenderId: "1001879692422",
+          projectId: "quartiersur"
+      )
+  );
 }
 
 class LoginPage extends StatelessWidget {
@@ -13,8 +27,109 @@ class LoginPage extends StatelessWidget {
     const fieldColor = Color(0xFF2F4F4F);
     const textColor = Colors.white;
 
-    TextEditingController usernameOrEmail = TextEditingController();
-    TextEditingController password = TextEditingController();
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    String username = '';
+    String password = '';
+
+    //Collection reference for users
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    //method to fetch the username then the password of that username if exists
+    Future<bool?> _checkCredentials(String username, String password) async{
+      if (username.trim().isNotEmpty) {
+        if (password.trim().isNotEmpty) {
+          users
+              .doc(username)
+              .get()
+              .then((DocumentSnapshot snapshot) {
+                if (snapshot.exists) {
+                  if (snapshot['password'] == password) {
+                    return true;
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Invalid Password'),
+                          content: const Text('The Username and Password Provided '
+                              'Do Not Match, Check Your Password and Try Again'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Invalid Username'),
+                        content: const Text('The Username Provided Does Not Exist, Please Enter a '
+                            'Valid Username'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Password Empty'),
+                content: const Text('The Password Field is Empty, Please Enter a '
+                    'Valid Password'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Username Empty'),
+              content: const Text('The Username Field is Empty, Please Enter a '
+                  'Valid Username'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+      return false;
+    }
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -46,7 +161,7 @@ class LoginPage extends StatelessWidget {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: fieldColor,
-                        hintText: 'Username or email',
+                        hintText: 'Username',
                         hintStyle: const TextStyle(color: textColor),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -54,7 +169,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       style: const TextStyle(color: textColor),
-                      controller: usernameOrEmail,
+                      controller: usernameController,
                     ),
                     const SizedBox(height: 12),
 
@@ -72,19 +187,37 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       style: const TextStyle(color: textColor),
-                      controller: password,
+                      controller: passwordController,
                     ),
                     const SizedBox(height: 16),
-
-                    // Text links
-                    const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: textColor),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgotPassPage(),)
+                          );
+                        },
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: textColor),
+                        ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'New to The Neighbourhood?\nSign up',
+                      'New to The Neighbourhood?',
                       style: TextStyle(color: textColor),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupPage(),)
+                        );
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(color: textColor),
+                      ),
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -96,7 +229,15 @@ class LoginPage extends StatelessWidget {
                 width: 180,
                 height: 36,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async{
+                    username = usernameController.text;
+                    password = passwordController.text;
+                    bool? checkCredentials = await _checkCredentials(username, password);
+                    if (checkCredentials == true) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => HomePage(),));
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: fieldColor,
                     shape: RoundedRectangleBorder(

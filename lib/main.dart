@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'prehomepage/loginpage.dart';
+import 'prehomepage/splashscreen.dart';
+
 
 void main() {
   runApp(const QuartierSur());
@@ -11,7 +12,7 @@ class QuartierSur extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      home: Splashscreen(),
     );
   }
 }

@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.18.1
+  firebase_core: any
   firebase_core_platform_interface: any
   cloud_firestore: any
 

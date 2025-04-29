@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sidebar.dart'; // Adjust if in a subfolder
+import '../components/sidebar.dart'; // Adjust if in a subfolder
 
 void main() {
   runApp(const MyApp());
@@ -57,13 +57,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        selectedIndex: 1,
-        onItemTap: (index) {
-          Navigator.pop(context);
-          // Add routing if needed
-        },
-      ),
+      drawer: SideBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Search'),
@@ -94,8 +88,6 @@ class _SearchPageState extends State<SearchPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Borough dropdown
-                // Borough dropdown
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(

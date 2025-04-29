@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/sidebar.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,45 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SizedBox(
-        width: 230,
-        child:Drawer(
-          child: Container(
-            width: 50,
-            color: Color(0xFF2D4B4F),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 50),
-                Text(
-                  'QuartierSûr',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFFA8B5A2),
-                  ),
-                ),
-                SizedBox(height: 40),
-                drawerItem(Icons.home, 'Home'),
-                drawerItem(Icons.search, 'Search'),
-                drawerItem(Icons.bookmark, 'Saved'),
-                drawerItem(Icons.person, 'Profile'),
-                drawerItem(Icons.settings, 'Settings', isSelected: true),
-                Spacer(),
-                drawerLink('Privacy Policy'),
-                drawerLink('About Us'),
-                SizedBox(height: 20),
-                Text(
-                  '© 2025 QuartierSûr.\nAll Rights Reserved.',
-                  style: TextStyle(fontSize: 10, color: Colors.white54),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: SideBar(),
       appBar: AppBar(
         backgroundColor: Color(0xFF2D4B4F),
         title: Text('Settings'),

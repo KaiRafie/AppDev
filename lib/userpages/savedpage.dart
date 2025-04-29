@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sidebar.dart'; // Adjust the path if needed
+import '../components/sidebar.dart'; // Adjust the path if needed
 
 void main() {
   runApp(const MyApp());
@@ -25,13 +25,7 @@ class SavedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        selectedIndex: 2, // Saved = index 2
-        onItemTap: (index) {
-          Navigator.pop(context);
-          // Add routing if needed
-        },
-      ),
+      drawer: SideBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Saved'),

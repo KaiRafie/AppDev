@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sidebar.dart'; // Make sure this file is in the same directory or adjust the path
+import '../components/sidebar.dart'; // Make sure this file is in the same directory or adjust the path
 
 void main() {
   runApp(const MyApp());
@@ -25,13 +25,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        selectedIndex: 3,
-        onItemTap: (index) {
-          Navigator.pop(context);
-          // TODO: Add navigation logic per index if needed
-        },
-      ),
+      drawer: SideBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Profile'),

@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:quartier_sur/prehomepage/loginpage.dart';
 
-main() {
+main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyDV3lAVmT4sXUj9v3hf0Tiw0TTptWqyeWc",
+          appId: "1001879692422",
+          messagingSenderId: "1001879692422",
+          projectId: "quartiersur"
+      )
+  );
   runApp(SignupPage());
 }
 
@@ -14,10 +26,37 @@ class SignupPage extends StatelessWidget {
     const textColor = Colors.white;
     const double fieldWidth = 350;
 
-    TextEditingController username = TextEditingController();
-    TextEditingController email = TextEditingController();
-    TextEditingController password = TextEditingController();
-    TextEditingController checkPassword = TextEditingController();
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController checkPasswordController = TextEditingController();
+
+    String username = '';
+    String email = '';
+    String password = '';
+    String confirmPassword = '';
+
+    List<int> newLists = [0];
+    Future<void> _signUp(String username, String email, String password) async{
+      if (username.trim().isNotEmpty && password.trim().isNotEmpty) {
+        try {
+          await users.doc(username).set({
+            'email': email,
+            'password': password,
+            'crimesCreated': newLists,
+            'crimesSaved': newLists
+          });
+          print('user added');
+        } catch (error) {
+          print('failed to add the user :$error');
+        }
+      } else {
+        _showErrorDialog(context, 'Invalid username or password', 'Please enter '
+            'valid Credentials.');
+      }
+    }
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -44,13 +83,13 @@ class SignupPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _textFieldInstance(hint: 'Username', controller: username),
+                    _textFieldInstance(hint: 'Username', controller: usernameController),
                     const SizedBox(height: 12),
-                    _textFieldInstance(hint: 'Email', controller: email),
+                    _textFieldInstance(hint: 'Email', controller: emailController),
                     const SizedBox(height: 12),
-                    _textFieldInstance(hint: 'Password', obscure: true, controller: password),
+                    _textFieldInstance(hint: 'Password', obscure: true, controller: passwordController),
                     const SizedBox(height: 12),
-                    _textFieldInstance(hint: 'Re-enter Password', obscure: true, controller: checkPassword),
+                    _textFieldInstance(hint: 'Re-enter Password', obscure: true, controller: checkPasswordController),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -61,7 +100,21 @@ class SignupPage extends StatelessWidget {
                 width: 180,
                 height: 36,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    username = usernameController.text;
+                    email = emailController.text;
+                    password = passwordController.text;
+                    confirmPassword = checkPasswordController.text;
+                    if (password == confirmPassword) {
+                      _signUp(username, email, password);
+
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage(),));
+                    } else {
+                      _showErrorDialog(context, 'Passwords do not match', 'Please '
+                          'confirm the password with the correct input');
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: fieldColor,
                     shape: RoundedRectangleBorder(
@@ -99,4 +152,20 @@ class SignupPage extends StatelessWidget {
       controller: controller,
     );
   }
+}
+
+void _showErrorDialog(BuildContext context, String title, String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
 }

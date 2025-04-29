@@ -8,6 +8,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideBar(),
+      appBar: AppBar(
+        title: Text("Home Page"),
+        centerTitle: true,
+      ),
     );
   }
 }

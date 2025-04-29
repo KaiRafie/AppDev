@@ -23,7 +23,7 @@ class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFA8B5A2), // Light green background
+      backgroundColor: const Color(0xFFA8B5A2),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -92,7 +92,7 @@ class ResetPasswordPage extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           filled: true,
-          fillColor: const Color(0xFF2F4F4F), // Dark green input color
+          fillColor: const Color(0xFF2F4F4F),
           hintStyle: const TextStyle(color: Colors.white),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           border: OutlineInputBorder(

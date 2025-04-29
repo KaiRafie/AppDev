@@ -18,7 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideBar(),
-      backgroundColor: const Color(0xFFA8B5A2), // Background color
+      backgroundColor: const Color(0xFFA8B5A2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -116,9 +116,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         thumbColor: WidgetStateProperty.all(Color(0xFFB7C2A9)),
                         trackColor: WidgetStateProperty.resolveWith<Color>((states) {
                           if (states.contains(WidgetState.selected)) {
-                            return Colors.black; // ON -> Black
+                            return Colors.black;
                           }
-                          return Colors.white; // OFF -> White
+                          return Colors.white;
                         }),
                         overlayColor: WidgetStateProperty.all(Colors.transparent),
                         trackOutlineColor: WidgetStateProperty.all(Colors.transparent),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../userpages/homepage.dart';
 import 'forgotpasspage.dart';
@@ -16,6 +15,7 @@ main() async{
           projectId: "quartiersur"
       )
   );
+  runApp(LoginPage());
 }
 
 class LoginPage extends StatelessWidget {
@@ -36,99 +36,58 @@ class LoginPage extends StatelessWidget {
     //Collection reference for users
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+    // helper method to show error dialogs to simplify the code
+    void _showErrorDialog(BuildContext context, String title, String message) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
     //method to fetch the username then the password of that username if exists
-    Future<bool?> _checkCredentials(String username, String password) async{
-      if (username.trim().isNotEmpty) {
-        if (password.trim().isNotEmpty) {
-          users
-              .doc(username)
-              .get()
-              .then((DocumentSnapshot snapshot) {
-                if (snapshot.exists) {
-                  if (snapshot['password'] == password) {
-                    return true;
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Invalid Password'),
-                          content: const Text('The Username and Password Provided '
-                              'Do Not Match, Check Your Password and Try Again'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Invalid Username'),
-                        content: const Text('The Username Provided Does Not Exist, Please Enter a '
-                            'Valid Username'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-          });
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Password Empty'),
-                content: const Text('The Password Field is Empty, Please Enter a '
-                    'Valid Password'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Username Empty'),
-              content: const Text('The Username Field is Empty, Please Enter a '
-                  'Valid Username'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+    Future<bool?> _checkCredentials(String username, String password) async {
+      if (username.trim().isEmpty) {
+        _showErrorDialog(context, 'Username Empty', 'Please enter a valid username.');
+        return false;
       }
-      return false;
+
+      if (password.trim().isEmpty) {
+        _showErrorDialog(context, 'Password Empty', 'Please enter a valid password.');
+        return false;
+      }
+
+      try {
+        DocumentSnapshot snapshot = await users.doc(username).get();
+
+        if (snapshot.exists) {
+          if (snapshot['Password'] == password) {
+            return true;
+          } else {
+            _showErrorDialog(context, 'Invalid Password',
+                'The username and password do not match. Please check your password.');
+            return false;
+          }
+        } else {
+          _showErrorDialog(context, 'Invalid Username',
+              'The username provided does not exist. Please enter a valid username.');
+          return false;
+        }
+      } on FirebaseException catch (e) {
+        _showErrorDialog(context, 'Firebase Error', e.message ?? 'An error occurred.');
+        return false;
+      } catch (e) {
+        _showErrorDialog(context, 'Unknown Error', 'An unexpected error occurred.');
+        return false;
+      }
     }
 
     return Scaffold(

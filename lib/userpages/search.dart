@@ -88,8 +88,6 @@ class _SearchPageState extends State<SearchPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Borough dropdown
-                // Borough dropdown
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(

@@ -15,7 +15,7 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  int _selectedIndex = 0; // ⭐️ keep track internally
+  int _selectedIndex = 0;
   final Color darkGreen = const Color(0xFF2F4F4F);
 
   void _navigateToPage(BuildContext context, int index) {

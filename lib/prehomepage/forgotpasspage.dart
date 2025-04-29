@@ -25,7 +25,7 @@ class ForgotPassPage extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton.icon(
               onPressed: () {
-                // Navigator.pop(context); or use your login page route
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back, color: Color(0xFF2F4F4F)),
               label: const Text(

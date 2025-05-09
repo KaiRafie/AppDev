@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quartier_sur/components/sidebar.dart';
 
 
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -18,6 +19,10 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideBar(selectedIndex: 5,),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF2F4F4F),
+        title: const Text('Settings'),
+      ),
       backgroundColor: const Color(0xFFA8B5A2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

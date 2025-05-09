@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:quartier_sur/userpages/createreportpage.dart';
+import '../userpages/createreportpage.dart';
 import '../userpages/homepage.dart';
-import '../userpages/createdpage.dart';
 import '../userpages/savedpage.dart';
 import '../userpages/search.dart';
 import '../settings/profilepage.dart';
 import '../settings/privacypolicypage.dart';
 import '../settings/aboutus.dart';
+import '../settings/settingspage.dart';
 
 class SideBar extends StatefulWidget {
   final int selectedIndex;
@@ -18,14 +18,9 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  int _selectedIndex = 0;
   final Color darkGreen = const Color(0xFF2F4F4F);
 
   void _navigateToPage(BuildContext context, int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
     Widget page;
 
     switch (index) {
@@ -52,6 +47,7 @@ class _SideBarState extends State<SideBar> {
         break;
       case 7:
         page = AboutUsPage();
+        break;
       default:
         page = HomePage();
     }

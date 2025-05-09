@@ -25,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 4,),
       appBar: AppBar(
         backgroundColor: Color(0xFF2D4B4F),
         title: Text('Settings'),

@@ -156,15 +156,21 @@ class LoginPage extends StatelessWidget {
                                 builder: (context) => ForgotPassPage(),)
                           );
                         },
+                      style: ElevatedButton.styleFrom(
+                        alignment: Alignment.centerLeft
+                      ),
                         child: const Text(
                           'Forgot Password?',
                           style: TextStyle(color: textColor),
                         ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'New to The Neighbourhood?',
-                      style: TextStyle(color: textColor),
+                    Padding(
+                        padding: EdgeInsets.only(left: 12),
+                      child: const Text(
+                        'New to The Neighbourhood?',
+                        style: TextStyle(color: textColor),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -173,6 +179,9 @@ class LoginPage extends StatelessWidget {
                               builder: (context) => SignupPage(),)
                         );
                       },
+                      style: ElevatedButton.styleFrom(
+                          alignment: Alignment.centerLeft
+                      ),
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(color: textColor),

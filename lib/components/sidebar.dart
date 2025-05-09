@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:quartier_sur/userpages/createreportpage.dart';
 import '../userpages/homepage.dart';
 import '../userpages/createdpage.dart';
 import '../userpages/savedpage.dart';
 import '../userpages/search.dart';
 import '../settings/profilepage.dart';
-import '../settings/pirvacypolicypage.dart';
+import '../settings/privacypolicypage.dart';
 import '../settings/aboutus.dart';
 
 class SideBar extends StatefulWidget {
-  const SideBar({super.key});
+  final int selectedIndex;
+
+  const SideBar({super.key, required this.selectedIndex});
 
   @override
   State<SideBar> createState() => _SideBarState();
@@ -33,14 +36,22 @@ class _SideBarState extends State<SideBar> {
         page = SearchPage();
         break;
       case 2:
-        page = SavedPage();
+        page = CreateReportPage();
         break;
       case 3:
-        page = ProfilePage();
+        page = SavedPage();
         break;
       case 4:
+        page = ProfilePage();
+        break;
+      case 5:
         page = SettingsPage();
         break;
+      case 6:
+        page = PrivacyPolicyPage();
+        break;
+      case 7:
+        page = AboutUsPage();
       default:
         page = HomePage();
     }
@@ -79,11 +90,13 @@ class _SideBarState extends State<SideBar> {
           const SizedBox(height: 20),
           _buildListTile(context, 1, Icons.search, 'Search'),
           const SizedBox(height: 20),
-          _buildListTile(context, 2, Icons.bookmark, 'Saved'),
+          _buildListTile(context, 2, Icons.add, 'Create Report'),
           const SizedBox(height: 20),
-          _buildListTile(context, 3, Icons.person, 'Profile'),
+          _buildListTile(context, 3, Icons.bookmark, 'Saved'),
           const SizedBox(height: 20),
-          _buildListTile(context, 4, Icons.settings, 'Settings'),
+          _buildListTile(context, 4, Icons.person, 'Profile'),
+          const SizedBox(height: 20),
+          _buildListTile(context, 5, Icons.settings, 'Settings'),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -130,7 +143,7 @@ class _SideBarState extends State<SideBar> {
   }
 
   Widget _buildListTile(BuildContext context, int index, IconData icon, String title) {
-    final isSelected = index == _selectedIndex;
+    final isSelected = index == widget.selectedIndex;
 
     return Container(
       color: isSelected ? const Color(0xFF487B7B) : darkGreen,

@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 4,),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Profile'),

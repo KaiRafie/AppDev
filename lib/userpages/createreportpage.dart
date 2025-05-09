@@ -88,7 +88,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 2,),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Create Report'),

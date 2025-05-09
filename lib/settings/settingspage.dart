@@ -17,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 5,),
       backgroundColor: const Color(0xFFA8B5A2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

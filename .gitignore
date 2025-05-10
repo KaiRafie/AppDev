@@ -169,9 +169,5 @@ web/.dart_tool/
 web/build/
 
 # Others
-<<<<<<< HEAD
 pubspec.lock
-=======
-pubspec.lock
-functions/.envfunctions/.env
->>>>>>> 6a4f453 (Update .gitignore)
+functions/.env

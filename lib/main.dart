@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:quartier_sur/system/notification_service.dart';
 import 'components/splashscreen.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,9 @@ void main() async{
           projectId: "quartiersur"
       )
   );
+
+  await NotificationService().init();
+
   runApp(const QuartierSur());
 }
 

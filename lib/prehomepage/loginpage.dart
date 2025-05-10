@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../userpages/homepage.dart';
 import 'forgotpasspage.dart';
 import 'signuppage.dart';
+import '../system/userSession.dart';
 
 main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -202,6 +203,7 @@ class LoginPage extends StatelessWidget {
                     password = passwordController.text;
                     bool? checkCredentials = await _checkCredentials(username, password);
                     if (checkCredentials == true) {
+                      UserSession.username = username;
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => HomePage(),));
                     }

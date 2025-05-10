@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quartier_sur/components/sidebar.dart';
+import '../system/notification_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../system/userSession.dart';
 
 
 
@@ -14,6 +17,56 @@ class _SettingsPageState extends State<SettingsPage> {
   bool locationEnabled = false;
   bool notificationsEnabled = false;
   double rating = 5.0;
+
+  void _onSwitchChanged(bool value) async {
+    setState(() {
+      notificationsEnabled = value;
+    });
+
+    // Update the user's preference in Firestore
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .update({'notificationsEnabled': value});
+    } catch (e) {
+      print("Failed to update Firestore: $e");
+      // Optional: show a Snackbar or error alert
+    }
+
+    if (value) {
+      NotificationService().showNotification(
+        id: 0,
+        title: 'Notifications Enabled',
+        body: 'You turned on notifications. Now you can receive notifications\n'
+            'about new incidents in your area.',
+      );
+    }
+  }
+
+  void _loadNotificationSetting() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .get();
+
+      if (doc.exists) {
+        setState(() {
+          notificationsEnabled = doc.data()?['notificationsEnabled'] ?? false;
+        });
+      }
+    } catch (e) {
+      print("Failed to load Firestore setting: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadNotificationSetting();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,11 +184,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Switch(
                         value: notificationsEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            notificationsEnabled = value;
-                          });
-                        },
+                        onChanged: _onSwitchChanged,
                       ),
                     ),
                   ),

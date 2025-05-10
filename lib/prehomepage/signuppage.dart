@@ -46,7 +46,10 @@ class SignupPage extends StatelessWidget {
             'email': email,
             'password': password,
             'crimesCreated': newLists,
-            'crimesSaved': newLists
+            'crimesSaved': newLists,
+            'notificationsEnabled': false,
+            'locationEnabled': false,
+            'location': "",
           });
           print('user added');
         } catch (error) {

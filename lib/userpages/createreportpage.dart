@@ -90,14 +90,26 @@ class _CreateReportPageState extends State<CreateReportPage> {
   Future<void> _createCrime(String username, String createdDate, String crimeType
       , String description, String date, String time) async{
 
+    /*
+    * todo: make the id auto increment by fetching the last id from the db
+    * todo: and increment it here
+    * todo: create a crime and save it in the db
+    * */
+
+
   }
 
   Future<void> _countCrime(String crimeType) async{
-
+    /*
+    * todo: get the crime type's count and increment it here each time the type
+    * todo: is used and save it in the crimeStats collection
+    * */
   }
 
   Future<void> _saveCrimeId(String username) async{
-
+    /*
+    * todo: based on the username, save the crime's id in the user's crimeCreated array
+    * */
   }
 
   String? selectedValue;
@@ -111,14 +123,14 @@ class _CreateReportPageState extends State<CreateReportPage> {
     'Vehicle Theft',
     'Break and Enter',
     'Vandalism',
-    'Fraud / Scams',
+    'Fraud - Scams',
     'Drug Offences',
     'Weapons Offences',
     'Impaired Driving',
-    'Harassment / Threats',
+    'Harassment - Threats',
     'Kidnapping',
     'Arson',
-    'Disturbance / Mischief',
+    'Disturbance - Mischief',
   ];
 
   @override

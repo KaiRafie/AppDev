@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import '../components/sidebar.dart'; // adjust path if needed
 
 void main() {
@@ -85,6 +87,40 @@ class _CreateReportPageState extends State<CreateReportPage> {
     });
   }
 
+  Future<void> _createCrime(String username, String createdDate, String crimeType
+      , String description, String date, String time) async{
+
+  }
+
+  Future<void> _countCrime(String crimeType) async{
+
+  }
+
+  Future<void> _saveCrimeId(String username) async{
+
+  }
+
+  String? selectedValue;
+
+  final List<String> items = [
+    'Assault',
+    'Sexual Assault',
+    'Robbery',
+    'Homicide',
+    'Theft',
+    'Vehicle Theft',
+    'Break and Enter',
+    'Vandalism',
+    'Fraud / Scams',
+    'Drug Offences',
+    'Weapons Offences',
+    'Impaired Driving',
+    'Harassment / Threats',
+    'Kidnapping',
+    'Arson',
+    'Disturbance / Mischief',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +134,35 @@ class _CreateReportPageState extends State<CreateReportPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            // drop down list of crime types
+            DropdownButtonFormField<String>(
+              hint: Text("Select a crime type", style: TextStyle(color: Colors.black)),
+              value: selectedValue,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedValue = newValue;
+                });
+              },
+              items: items.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFCDD8B6), // Match your form color
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              dropdownColor: Color(0xFFCDD8B6), // Dropdown background
+              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+              style: TextStyle(color: Colors.black),
+            ),
+            const SizedBox(height: 20),
             // Incident text box
             Container(
               decoration: BoxDecoration(

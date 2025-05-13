@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quartier_sur/components/sidebar.dart';
 import '../system/notification_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:location/location.dart' as loc;
+import 'package:geocoding/geocoding.dart';
 import '../system/userSession.dart';
 
 
@@ -15,15 +17,76 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool locationEnabled = false;
+  final loc.Location _location = loc.Location();
   bool notificationsEnabled = false;
   double rating = 5.0;
+  final montrealAreas = [
+    'Ahuntsic-Cartierville',
+    'Anjou',
+    'Côte-des-Neiges–Notre-Dame-de-Grâce',
+    'Lachine',
+    'LaSalle',
+    'Le Plateau-Mont-Royal',
+    'Le Sud-Ouest',
+    'L’Île-Bizard–Sainte-Geneviève',
+    'Mercier–Hochelaga-Maisonneuve',
+    'Montréal-Nord',
+    'Outremont',
+    'Pierrefonds-Roxboro',
+    'Rivière-des-Prairies–Pointe-aux-Trembles',
+    'Rosemont–La Petite-Patrie',
+    'Saint-Laurent',
+    'Saint-Léonard',
+    'Verdun',
+    'Ville-Marie',
+    'Villeray–Saint-Michel–Parc-Extension'
+  ];
 
-  void _onSwitchChanged(bool value) async {
+  String matchArea(String? rawArea) {
+    if (rawArea == null) return 'Unknown';
+    return montrealAreas.firstWhere(
+          (area) => rawArea.toLowerCase().contains(area.toLowerCase()),
+      orElse: () => 'Unknown',
+    );
+  }
+
+  Future<void> _determineLocation() async {
+    try {
+      bool serviceEnabled = await _location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await _location.requestService();
+      }
+
+      loc.PermissionStatus permissionGranted = await _location.hasPermission();
+      if (permissionGranted == loc.PermissionStatus.denied) {
+        permissionGranted = await _location.requestPermission();
+      }
+
+      if (serviceEnabled && permissionGranted == loc.PermissionStatus.granted) {
+        loc.LocationData locationData = await _location.getLocation();
+        double latitude = locationData.latitude!;
+        double longitude = locationData.longitude!;
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+        String? rawArea = placemarks.first.subLocality ?? placemarks.first.locality;
+        String matchedArea = matchArea(rawArea);
+
+        await FirebaseFirestore.instance.collection('users').doc(UserSession.username).set({
+          'locationEnabled': true,
+          'location': matchedArea,
+        }, SetOptions(merge: true));
+
+        print("✅ Borough saved: $matchedArea");
+      }
+    } catch (e) {
+      print("❌ Error fetching location: $e");
+    }
+  }
+
+  void _onSwitchChangedNotification(bool value) async {
     setState(() {
       notificationsEnabled = value;
     });
-
-    // Update the user's preference in Firestore
     try {
       await FirebaseFirestore.instance
           .collection('users')
@@ -31,7 +94,6 @@ class _SettingsPageState extends State<SettingsPage> {
           .update({'notificationsEnabled': value});
     } catch (e) {
       print("Failed to update Firestore: $e");
-      // Optional: show a Snackbar or error alert
     }
 
     if (value) {
@@ -41,6 +103,64 @@ class _SettingsPageState extends State<SettingsPage> {
         body: 'You turned on notifications. Now you can receive notifications\n'
             'about new incidents in your area.',
       );
+    }
+  }
+
+  void _onSwitchChangedLocation(bool value) async {
+    setState(() {
+      locationEnabled = value;
+    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .update({'locationEnabled': value});
+    } catch (e) {
+      print("Failed to update Firestore: $e");
+    }
+
+    if (value) {
+      await _determineLocation();
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(UserSession.username).set({
+        'location_enabled': false,
+      }, SetOptions(merge: true));
+    }
+
+  }
+
+  Future<void> _enableLocationService() async {
+    bool serviceEnabled = await _location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _location.requestService();
+    }
+
+    loc.PermissionStatus permissionGranted = await _location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await _location.requestPermission();
+    }
+
+    if (serviceEnabled && permissionGranted == loc.PermissionStatus.granted) {
+      setState(() {
+        locationEnabled = true;
+      });
+    }
+  }
+
+  Future<void> _loadLocationPreference() async {
+    final doc = await FirebaseFirestore.instance.collection('users')
+        .doc(UserSession.username).get();
+
+    if (doc.exists && doc.data()!.containsKey('locationEnabled')) {
+      final enabled = doc['locationEnabled'] as bool;
+      setState(() {
+        locationEnabled = enabled;
+      });
+
+      if (enabled) {
+        _enableLocationService();
+        _determineLocation();
+      }
     }
   }
 
@@ -66,6 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
     // TODO: implement initState
     super.initState();
     _loadNotificationSetting();
+    _loadLocationPreference();
   }
 
   @override
@@ -122,11 +243,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Switch(
                         value: locationEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            locationEnabled = value;
-                          });
-                        },
+                        onChanged: _onSwitchChangedLocation
                       ),
                     ),
                   ),
@@ -184,7 +301,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Switch(
                         value: notificationsEnabled,
-                        onChanged: _onSwitchChanged,
+                        onChanged: _onSwitchChangedNotification,
                       ),
                     ),
                   ),

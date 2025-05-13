@@ -39,7 +39,7 @@ class SignupPage extends StatelessWidget {
     String confirmPassword = '';
 
     List<int> newLists = [0];
-    Future<void> _signUp(String username, String email, String password) async{
+    Future<void> signUp(String username, String email, String password) async{
       if (username.trim().isNotEmpty && password.trim().isNotEmpty) {
         try {
           await users.doc(username).set({
@@ -109,7 +109,7 @@ class SignupPage extends StatelessWidget {
                     password = passwordController.text;
                     confirmPassword = checkPasswordController.text;
                     if (password == confirmPassword) {
-                      _signUp(username, email, password);
+                      signUp(username, email, password);
 
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => LoginPage(),));

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../components/sidebar.dart'; // adjust path if needed
 
 void main() {
@@ -42,12 +40,11 @@ class _CreateReportPageState extends State<CreateReportPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData(
-            dialogBackgroundColor: const Color(0xFFCDD8B6),
             colorScheme: const ColorScheme.light(
               primary: Color(0xFF2F4F4F),
               onPrimary: Colors.white,
               onSurface: Colors.black,
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFFCDD8B6)),
           ),
           child: child!,
         );
@@ -62,12 +59,11 @@ class _CreateReportPageState extends State<CreateReportPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData(
-            dialogBackgroundColor: const Color(0xFFCDD8B6),
             colorScheme: const ColorScheme.light(
               primary: Color(0xFF2F4F4F),
               onPrimary: Colors.white,
               onSurface: Colors.black,
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFFCDD8B6)),
           ),
           child: child!,
         );

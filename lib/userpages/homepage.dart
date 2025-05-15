@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 0,),
       appBar: AppBar(
         title: Text("Home Page"),
         centerTitle: true,

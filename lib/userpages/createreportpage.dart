@@ -40,12 +40,11 @@ class _CreateReportPageState extends State<CreateReportPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData(
-            dialogBackgroundColor: const Color(0xFFCDD8B6),
             colorScheme: const ColorScheme.light(
               primary: Color(0xFF2F4F4F),
               onPrimary: Colors.white,
               onSurface: Colors.black,
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFFCDD8B6)),
           ),
           child: child!,
         );
@@ -60,12 +59,11 @@ class _CreateReportPageState extends State<CreateReportPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData(
-            dialogBackgroundColor: const Color(0xFFCDD8B6),
             colorScheme: const ColorScheme.light(
               primary: Color(0xFF2F4F4F),
               onPrimary: Colors.white,
               onSurface: Colors.black,
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFFCDD8B6)),
           ),
           child: child!,
         );
@@ -85,10 +83,56 @@ class _CreateReportPageState extends State<CreateReportPage> {
     });
   }
 
+  Future<void> _createCrime(String username, String createdDate, String crimeType
+      , String description, String date, String time) async{
+
+    /*
+    * todo: make the id auto increment by fetching the last id from the db
+    * todo: and increment it here
+    * todo: create a crime and save it in the db
+    * */
+
+
+  }
+
+  Future<void> _countCrime(String crimeType) async{
+    /*
+    * todo: get the crime type's count and increment it here each time the type
+    * todo: is used and save it in the crimeStats collection
+    * */
+  }
+
+  Future<void> _saveCrimeId(String username) async{
+    /*
+    * todo: based on the username, save the crime's id in the user's crimeCreated array
+    * */
+  }
+
+  String? selectedValue;
+
+  final List<String> items = [
+    'Assault',
+    'Sexual Assault',
+    'Robbery',
+    'Homicide',
+    'Theft',
+    'Vehicle Theft',
+    'Break and Enter',
+    'Vandalism',
+    'Fraud - Scams',
+    'Drug Offences',
+    'Weapons Offences',
+    'Impaired Driving',
+    'Harassment - Threats',
+    'Kidnapping',
+    'Arson',
+    'Disturbance - Mischief',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 2,),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Create Report'),
@@ -98,6 +142,35 @@ class _CreateReportPageState extends State<CreateReportPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            // drop down list of crime types
+            DropdownButtonFormField<String>(
+              hint: Text("Select a crime type", style: TextStyle(color: Colors.black)),
+              value: selectedValue,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedValue = newValue;
+                });
+              },
+              items: items.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFCDD8B6), // Match your form color
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              dropdownColor: Color(0xFFCDD8B6), // Dropdown background
+              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+              style: TextStyle(color: Colors.black),
+            ),
+            const SizedBox(height: 20),
             // Incident text box
             Container(
               decoration: BoxDecoration(

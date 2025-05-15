@@ -170,3 +170,4 @@ web/build/
 
 # Others
 pubspec.lock
+functions/.env

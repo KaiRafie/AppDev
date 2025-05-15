@@ -84,7 +84,7 @@ class ResetPasswordPage extends StatelessWidget {
   }
 
   Widget _buildInputField(String hintText, bool isPassword) {
-    return Container(
+    return SizedBox(
       width: 300,
       height: 60,
       child: TextField(

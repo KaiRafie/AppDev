@@ -1,31 +1,13 @@
 import 'package:flutter/material.dart';
 import '../components/sidebar.dart'; // Make sure this file is in the same directory or adjust the path
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'QuartierSûr',
-      theme: ThemeData(useMaterial3: false),
-      home: const ProfilePage(),
-    );
-  }
-}
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 4,),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
         title: const Text('Profile'),

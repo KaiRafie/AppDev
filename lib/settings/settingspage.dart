@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:quartier_sur/components/sidebar.dart';
+import '../system/notification_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:location/location.dart' as loc;
+import 'package:geocoding/geocoding.dart';
+import '../system/userSession.dart';
+
 
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -11,13 +17,185 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool locationEnabled = false;
+  final loc.Location _location = loc.Location();
   bool notificationsEnabled = false;
   double rating = 5.0;
+  final montrealAreas = [
+    'Ahuntsic-Cartierville',
+    'Anjou',
+    'Côte-des-Neiges–Notre-Dame-de-Grâce',
+    'Lachine',
+    'LaSalle',
+    'Le Plateau-Mont-Royal',
+    'Le Sud-Ouest',
+    'L’Île-Bizard–Sainte-Geneviève',
+    'Mercier–Hochelaga-Maisonneuve',
+    'Montréal-Nord',
+    'Outremont',
+    'Pierrefonds-Roxboro',
+    'Rivière-des-Prairies–Pointe-aux-Trembles',
+    'Rosemont–La Petite-Patrie',
+    'Saint-Laurent',
+    'Saint-Léonard',
+    'Verdun',
+    'Ville-Marie',
+    'Villeray–Saint-Michel–Parc-Extension'
+  ];
+
+  String matchArea(String? rawArea) {
+    if (rawArea == null) return 'Unknown';
+    return montrealAreas.firstWhere(
+          (area) => rawArea.toLowerCase().contains(area.toLowerCase()),
+      orElse: () => 'Unknown',
+    );
+  }
+
+  Future<void> _determineLocation() async {
+    try {
+      bool serviceEnabled = await _location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await _location.requestService();
+      }
+
+      loc.PermissionStatus permissionGranted = await _location.hasPermission();
+      if (permissionGranted == loc.PermissionStatus.denied) {
+        permissionGranted = await _location.requestPermission();
+      }
+
+      if (serviceEnabled && permissionGranted == loc.PermissionStatus.granted) {
+        loc.LocationData locationData = await _location.getLocation();
+        double latitude = locationData.latitude!;
+        double longitude = locationData.longitude!;
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+        String? rawArea = placemarks.first.subLocality ?? placemarks.first.locality;
+        String matchedArea = matchArea(rawArea);
+
+        await FirebaseFirestore.instance.collection('users').doc(UserSession.username).set({
+          'locationEnabled': true,
+          'location': matchedArea,
+        }, SetOptions(merge: true));
+
+        print("✅ Borough saved: $matchedArea");
+      }
+    } catch (e) {
+      print("❌ Error fetching location: $e");
+    }
+  }
+
+  void _onSwitchChangedNotification(bool value) async {
+    setState(() {
+      notificationsEnabled = value;
+    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .update({'notificationsEnabled': value});
+    } catch (e) {
+      print("Failed to update Firestore: $e");
+    }
+
+    if (value) {
+      NotificationService().showNotification(
+        id: 0,
+        title: 'Notifications Enabled',
+        body: 'You turned on notifications. Now you can receive notifications\n'
+            'about new incidents in your area.',
+      );
+    }
+  }
+
+  void _onSwitchChangedLocation(bool value) async {
+    setState(() {
+      locationEnabled = value;
+    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .update({'locationEnabled': value});
+    } catch (e) {
+      print("Failed to update Firestore: $e");
+    }
+
+    if (value) {
+      await _determineLocation();
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(UserSession.username).set({
+        'location_enabled': false,
+      }, SetOptions(merge: true));
+    }
+
+  }
+
+  Future<void> _enableLocationService() async {
+    bool serviceEnabled = await _location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _location.requestService();
+    }
+
+    loc.PermissionStatus permissionGranted = await _location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await _location.requestPermission();
+    }
+
+    if (serviceEnabled && permissionGranted == loc.PermissionStatus.granted) {
+      setState(() {
+        locationEnabled = true;
+      });
+    }
+  }
+
+  Future<void> _loadLocationPreference() async {
+    final doc = await FirebaseFirestore.instance.collection('users')
+        .doc(UserSession.username).get();
+
+    if (doc.exists && doc.data()!.containsKey('locationEnabled')) {
+      final enabled = doc['locationEnabled'] as bool;
+      setState(() {
+        locationEnabled = enabled;
+      });
+
+      if (enabled) {
+        _enableLocationService();
+        _determineLocation();
+      }
+    }
+  }
+
+  void _loadNotificationSetting() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(UserSession.username)
+          .get();
+
+      if (doc.exists) {
+        setState(() {
+          notificationsEnabled = doc.data()?['notificationsEnabled'] ?? false;
+        });
+      }
+    } catch (e) {
+      print("Failed to load Firestore setting: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationSetting();
+    _loadLocationPreference();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 5,),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF2F4F4F),
+        title: const Text('Settings'),
+      ),
       backgroundColor: const Color(0xFFA8B5A2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,11 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Switch(
                         value: locationEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            locationEnabled = value;
-                          });
-                        },
+                        onChanged: _onSwitchChangedLocation
                       ),
                     ),
                   ),
@@ -126,11 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Switch(
                         value: notificationsEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            notificationsEnabled = value;
-                          });
-                        },
+                        onChanged: _onSwitchChangedNotification,
                       ),
                     ),
                   ),

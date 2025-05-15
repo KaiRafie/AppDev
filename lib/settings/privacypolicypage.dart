@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:quartier_sur/components/sidebar.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
-  const PrivacyPolicyPage({Key? key}) : super(key: key);
+  const PrivacyPolicyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     const backgroundColor = Color(0xFFA8B5A2);
 
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBar(selectedIndex: 5,),
       appBar: AppBar(
-        title: const Text('Privacy Policy'),
+        backgroundColor: const Color(0xFF2D4A46),
+        title: const Text('Privacy Policy', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
       ),
       backgroundColor: backgroundColor,
       body: const SingleChildScrollView(

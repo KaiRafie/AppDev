@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../userpages/homepage.dart';
 import 'forgotpasspage.dart';
 import 'signuppage.dart';
+import '../system/userSession.dart';
 
 main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class LoginPage extends StatelessWidget {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     // helper method to show error dialogs to simplify the code
-    void _showErrorDialog(BuildContext context, String title, String message) {
+    void showErrorDialog(BuildContext context, String title, String message) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -54,14 +55,14 @@ class LoginPage extends StatelessWidget {
     }
 
     //method to fetch the username then the password of that username if exists
-    Future<bool?> _checkCredentials(String username, String password) async {
+    Future<bool?> checkCredentials0(String username, String password) async {
       if (username.trim().isEmpty) {
-        _showErrorDialog(context, 'Username Empty', 'Please enter a valid username.');
+        showErrorDialog(context, 'Username Empty', 'Please enter a valid username.');
         return false;
       }
 
       if (password.trim().isEmpty) {
-        _showErrorDialog(context, 'Password Empty', 'Please enter a valid password.');
+        showErrorDialog(context, 'Password Empty', 'Please enter a valid password.');
         return false;
       }
 
@@ -72,20 +73,20 @@ class LoginPage extends StatelessWidget {
           if (snapshot['password'] == password) {
             return true;
           } else {
-            _showErrorDialog(context, 'Invalid Password',
+            showErrorDialog(context, 'Invalid Password',
                 'The username and password do not match. Please check your password.');
             return false;
           }
         } else {
-          _showErrorDialog(context, 'Invalid Username',
+          showErrorDialog(context, 'Invalid Username',
               'The username provided does not exist. Please enter a valid username.');
           return false;
         }
       } on FirebaseException catch (e) {
-        _showErrorDialog(context, 'Firebase Error', e.message ?? 'An error occurred.');
+        showErrorDialog(context, 'Firebase Error', e.message ?? 'An error occurred.');
         return false;
       } catch (e) {
-        _showErrorDialog(context, 'Unknown Error', 'An unexpected error occurred.');
+        showErrorDialog(context, 'Unknown Error', 'An unexpected error occurred.');
         return false;
       }
     }
@@ -156,15 +157,21 @@ class LoginPage extends StatelessWidget {
                                 builder: (context) => ForgotPassPage(),)
                           );
                         },
+                      style: ElevatedButton.styleFrom(
+                        alignment: Alignment.centerLeft
+                      ),
                         child: const Text(
                           'Forgot Password?',
                           style: TextStyle(color: textColor),
                         ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'New to The Neighbourhood?',
-                      style: TextStyle(color: textColor),
+                    Padding(
+                        padding: EdgeInsets.only(left: 12),
+                      child: const Text(
+                        'New to The Neighbourhood?',
+                        style: TextStyle(color: textColor),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -173,6 +180,9 @@ class LoginPage extends StatelessWidget {
                               builder: (context) => SignupPage(),)
                         );
                       },
+                      style: ElevatedButton.styleFrom(
+                          alignment: Alignment.centerLeft
+                      ),
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(color: textColor),
@@ -191,8 +201,9 @@ class LoginPage extends StatelessWidget {
                   onPressed: () async{
                     username = usernameController.text;
                     password = passwordController.text;
-                    bool? checkCredentials = await _checkCredentials(username, password);
+                    bool? checkCredentials = await checkCredentials0(username, password);
                     if (checkCredentials == true) {
+                      UserSession.username = username;
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => HomePage(),));
                     }

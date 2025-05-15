@@ -38,7 +38,7 @@ class SignupPage extends StatelessWidget {
     String password = '';
     String confirmPassword = '';
 
-    List<int> newLists = [0];
+    List<int> newLists = [];
     Future<void> signUp(String username, String email, String password) async{
       if (username.trim().isNotEmpty && password.trim().isNotEmpty) {
         try {
@@ -50,6 +50,7 @@ class SignupPage extends StatelessWidget {
             'notificationsEnabled': false,
             'locationEnabled': false,
             'location': "",
+            'rateUs': 0.0,
           });
           print('user added');
         } catch (error) {

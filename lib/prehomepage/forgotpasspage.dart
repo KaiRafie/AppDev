@@ -28,7 +28,7 @@ class ForgotPassPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(
-                    builder: (context) => LoginPage(),));
+                  builder: (context) => LoginPage(),));
               },
               icon: const Icon(Icons.arrow_back, color: Color(0xFF2F4F4F)),
               label: const Text(

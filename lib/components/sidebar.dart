@@ -28,13 +28,13 @@ class _SideBarState extends State<SideBar> {
         page = HomePage();
         break;
       case 1:
-        page = SearchPage();
+        page = SearchIncidentsPage();
         break;
       case 2:
         page = CreateReportPage();
         break;
       case 3:
-        page = SavedPage();
+        page = SavedIncidentsPage();
         break;
       case 4:
         page = ProfilePage();

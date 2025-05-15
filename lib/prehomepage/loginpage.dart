@@ -151,23 +151,23 @@ class LoginPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(
-                                builder: (context) => ForgotPassPage(),)
-                          );
-                        },
+                      onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPassPage(),)
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        alignment: Alignment.centerLeft
+                          alignment: Alignment.centerLeft
                       ),
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(color: textColor),
-                        ),
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: textColor),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Padding(
-                        padding: EdgeInsets.only(left: 12),
+                      padding: EdgeInsets.only(left: 12),
                       child: const Text(
                         'New to The Neighbourhood?',
                         style: TextStyle(color: textColor),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sidebar.dart'; // Make sure this file is in the same directory or adjust the path
+import '../components/sidebar.dart'; // Adjust the path if needed
 
 void main() {
   runApp(const MyApp());
@@ -14,27 +14,21 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'QuartierSûr',
       theme: ThemeData(useMaterial3: false),
-      home: const ProfilePage(),
+      home: const SavedPage(),
     );
   }
 }
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class SavedPage extends StatelessWidget {
+  const SavedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        selectedIndex: 3,
-        onItemTap: (index) {
-          Navigator.pop(context);
-          // TODO: Add navigation logic per index if needed
-        },
-      ),
+      drawer: SideBar(selectedIndex: 3,),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F4F4F),
-        title: const Text('Profile'),
+        title: const Text('Saved'),
       ),
       body: Container(
         color: const Color(0xFFA8B5A2),
@@ -42,17 +36,20 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2F4F4F),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Text(
+                'Saved Incidents',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF5C5C5C),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              child: const Text('View Your Reports'),
             ),
-            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: 8, // Dummy items
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 6),
@@ -74,22 +71,6 @@ class ProfilePage extends StatelessWidget {
                   );
                 },
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2F4F4F),
-              ),
-              child: const Text('Change Password'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2F4F4F),
-              ),
-              child: const Text('Delete Account'),
             ),
           ],
         ),

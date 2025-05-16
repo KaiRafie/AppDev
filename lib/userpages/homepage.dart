@@ -220,7 +220,10 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 50),
 
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => SearchIncidentsPage()));
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2F4F4F),
                       foregroundColor: Colors.white,

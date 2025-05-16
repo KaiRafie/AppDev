@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:quartier_sur/components/sidebar.dart';
 import 'package:quartier_sur/userpages/savedpage.dart';
+import 'package:quartier_sur/userpages/search.dart';
 import 'package:quartier_sur/userpages/statisticspage.dart';
 import '../system/userSession.dart';
 
